@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Papa from 'papaparse';
 import Input from './components/Input';
+import ProductsList from './components/ProductsList';
 import './styles/App.scss';
 
 export interface Product {
@@ -16,6 +17,7 @@ export interface Product {
 function App() {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const firstUpdate = useRef(true);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,10 +39,9 @@ function App() {
     Papa.parse('data/test.csv', {
       header: true,
       download: true,
-      //@@TODO fix type any
-      step: function (row: any) {
+      step: function (row) {
         if (inputValue.length) {
-          const product = row.data;
+          const product = row.data as unknown as Product;
 
           if (product.title.toLocaleLowerCase().includes(inputValue)) {
             searchResults.push(product);
@@ -50,13 +51,14 @@ function App() {
       complete: function () {
         // Limiting auto-suggested products shown to user to 10
         setSuggestions(searchResults.slice(0, 10));
+        setProducts(searchResults);
       },
     });
   }, [inputValue]);
 
   // Populating input field with the suggested product that user clicks on
-  const selectSuggestion = (suggestion: string) => {
-    setInputValue(suggestion);
+  const selectSuggestion = (suggestion: Product) => {
+    setInputValue(suggestion.title);
     setSuggestions([]);
   };
 
@@ -69,6 +71,7 @@ function App() {
         selectSuggestion={selectSuggestion}
         setInputValue={setInputValue}
       />
+      <ProductsList products={products} />
     </main>
   );
 }

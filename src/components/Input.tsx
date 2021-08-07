@@ -6,7 +6,7 @@ interface InputProps {
   inputValue: string;
   handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   suggestions: Product[];
-  selectSuggestion: (suggestion: string) => void;
+  selectSuggestion: (suggestion: Product) => void;
   setInputValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -24,7 +24,7 @@ function Input({
           {suggestions.map((suggestion) => (
             <li
               key={suggestion.gtin}
-              onClick={() => selectSuggestion(suggestion.title)}
+              onClick={() => selectSuggestion(suggestion)}
             >
               {suggestion.title}
             </li>
