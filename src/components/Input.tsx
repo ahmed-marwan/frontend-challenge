@@ -1,39 +1,20 @@
 import React, { useRef } from 'react';
-import { Product } from '../App';
+import { Hint } from 'react-autocomplete-hint';
 import '../styles/Input.scss';
 
 interface InputProps {
   inputValue: string;
   handleOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  suggestions: Product[];
-  selectSuggestion: (suggestion: Product) => void;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
+  productHints: string[];
+  clearInput: () => void;
 }
 
 function Input({
   inputValue,
   handleOnChange,
-  suggestions,
-  selectSuggestion,
-  setInputValue,
+  productHints,
+  clearInput,
 }: InputProps) {
-  const renderSuggestions = () => {
-    if (suggestions.length) {
-      return (
-        <ul>
-          {suggestions.map((suggestion) => (
-            <li
-              key={suggestion.gtin}
-              onClick={() => selectSuggestion(suggestion)}
-            >
-              {suggestion.title}
-            </li>
-          ))}
-        </ul>
-      );
-    }
-  };
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   if (inputRef.current) {
@@ -43,26 +24,28 @@ function Input({
   return (
     <div className="input-container">
       <div>
-        <input
-          type="text"
-          title="Search"
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck="false"
-          placeholder="Search"
-          autoFocus
-          value={inputValue}
-          onChange={handleOnChange}
-          ref={inputRef}
-        />
-        {inputValue && (
+        <Hint options={productHints} allowTabFill={true}>
+          <input
+            type="text"
+            title="Search"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck="false"
+            placeholder="Search"
+            autoFocus
+            value={inputValue}
+            onChange={handleOnChange}
+            ref={inputRef}
+          />
+        </Hint>
+      </div>
+      {inputValue && (
+        <div className="icon" onClick={clearInput}>
           <svg
             focusable="false"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             width="25px"
-            className="icon"
-            onClick={() => setInputValue('')}
           >
             <title>Clear</title>
             <path
@@ -70,9 +53,8 @@ function Input({
               d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
             ></path>
           </svg>
-        )}
-      </div>
-      {renderSuggestions()}
+        </div>
+      )}
     </div>
   );
 }
