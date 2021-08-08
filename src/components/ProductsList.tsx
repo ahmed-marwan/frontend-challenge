@@ -15,7 +15,7 @@ function ProductsList({ products }: ProductsListProps) {
         <Container>
           <Grid container spacing={2}>
             {products.map((product) => (
-              <Grid key={product.gtin} item xs={12} sm={6} md={4}>
+              <Grid key={product.gtin} item xs={12} sm={6} md={3}>
                 <ProductCard product={product} />
               </Grid>
             ))}

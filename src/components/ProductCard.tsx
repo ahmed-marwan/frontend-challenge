@@ -1,10 +1,11 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
+import { CardActions, Typography } from '@material-ui/core';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { Product } from '../App';
+import Modal from './Modal';
 
 interface ProductCardProps {
   product: Product;
@@ -14,10 +15,10 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       maxWidth: 350,
+      padding: 10,
     },
     media: {
       minHeight: 270,
-      paddingTop: '10.25%', // 16:9
     },
     strike: {
       color: 'red',
@@ -62,6 +63,9 @@ function ProductCard({ product }: ProductCardProps) {
           {product.gender}
         </Typography>
       </CardContent>
+      <CardActions>
+        <Modal product={product} />
+      </CardActions>
     </Card>
   );
 }
