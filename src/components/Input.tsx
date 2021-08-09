@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Hint } from 'react-autocomplete-hint';
 import '../styles/Input.scss';
 
@@ -17,9 +17,11 @@ function Input({
 }: InputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  if (inputRef.current) {
-    inputRef.current.focus();
-  }
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [inputValue]);
 
   return (
     <div className="input-container">

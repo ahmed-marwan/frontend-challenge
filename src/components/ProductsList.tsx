@@ -9,23 +9,19 @@ interface ProductsListProps {
 }
 
 function ProductsList({ products }: ProductsListProps) {
-  const renderProductsList = () => {
-    if (products.length) {
-      return (
-        <Container>
-          <Grid container spacing={2}>
-            {products.map((product) => (
-              <Grid key={product.gtin} item xs={12} sm={6} md={3}>
-                <ProductCard product={product} />
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      );
-    }
-  };
+  if (!products.length) return <div></div>;
 
-  return <div>{renderProductsList()}</div>;
+  return (
+    <Container data-testid="products-list">
+      <Grid container spacing={2}>
+        {products.map((product) => (
+          <Grid key={product.gtin} item xs={12} sm={6} md={3}>
+            <ProductCard product={product} />
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
+  );
 }
 
 export default ProductsList;

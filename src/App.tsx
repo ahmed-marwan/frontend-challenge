@@ -32,7 +32,7 @@ function App() {
   const [products, setProducts] = useState<Product[]>([]);
 
   const [noOfPages, setNoOfPages] = useState(1);
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
 
   const classes = useStyles();
@@ -70,12 +70,22 @@ function App() {
       );
 
       // 1.2. Select the list of products to be rendered
+      const indexOfFirstProduct = (currentPage - 1) * productsPerPage;
+      const indexOfLastProduct = currentPage * productsPerPage;
+
       const productsToRender = matchedProducts.slice(
-        (page - 1) * productsPerPage,
-        page * productsPerPage
+        indexOfFirstProduct,
+        indexOfLastProduct
       );
 
-      setProducts(productsToRender);
+      // Edge case: if a user enters a wide range search term "e.g. 's'", changes current page number,
+      // then goes back to complete the search term "e.g. 'salomon'"
+      if (matchedProducts.length < indexOfFirstProduct) {
+        setProducts(matchedProducts);
+        setCurrentPage(1);
+      } else {
+        setProducts(productsToRender);
+      }
 
       // 1.3. Calculate number of pages that will contain all matchedProducts || '1' if no matches were found
       const numberOfPages =
@@ -86,7 +96,7 @@ function App() {
 
     // 2. If user clears out inputValue using 'Backspace'
     if (!inputValue.trim()) setNoOfPages(1);
-  }, [data, inputValue, page]);
+  }, [data, inputValue, currentPage]);
 
   // When user clicks on clear input icon
   const clearInput = () => {
@@ -95,7 +105,14 @@ function App() {
 
   // Pagination change handler
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
+    setCurrentPage(value);
+
+    // Bring user to the top of page after chaning current page number
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
   };
 
   return (
@@ -113,7 +130,7 @@ function App() {
       <Box>
         <Pagination
           count={noOfPages}
-          page={page}
+          page={currentPage}
           onChange={handleChange}
           defaultPage={1}
           color="primary"
