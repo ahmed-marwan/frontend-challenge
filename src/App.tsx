@@ -33,25 +33,33 @@ function App() {
 
   const [noOfPages, setNoOfPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 10;
+  const productsPerPage = 100;
 
   const classes = useStyles();
 
   // On application's initial render
   useEffect(() => {
+    let isSubscribed = true;
+
     Papa.parse('data/test.csv', {
       header: true,
       download: true,
       complete: function (results) {
         const products = results.data as unknown as Product[];
 
-        // 1. Parse csv file and store its values in 'data' state
-        setData(products);
+        if (isSubscribed) {
+          // 1. Parse csv file and store its values in 'data' state
+          setData(products);
 
-        // 2. Initialize 'productHints' state with the title of all products
-        setProductHints(products.map((product) => product.title));
+          // 2. Initialize 'productHints' state with the title of all products
+          setProductHints(products.map((product) => product.title));
+        }
       },
     });
+
+    return () => {
+      isSubscribed = false;
+    };
   }, []);
 
   // Retrieve user's keystrokes and store it in 'inputValue' state

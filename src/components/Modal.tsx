@@ -40,7 +40,14 @@ function TransitionsModal({ product }: ModalProps) {
     return (
       <Grid container spacing={1}>
         {product.additional_image_link.split(',').map((img, index) => (
-          <Grid key={index} item xs={12} sm={6} md={6}>
+          <Grid
+            key={index}
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            data-testid="additional-image"
+          >
             <CardMedia className={classes.media} image={img} title="Product" />
           </Grid>
         ))}
@@ -53,6 +60,7 @@ function TransitionsModal({ product }: ModalProps) {
       <Button size="small" color="primary" onClick={handleOpen}>
         Show More
       </Button>
+
       <Modal
         className={classes.modal}
         open={open}

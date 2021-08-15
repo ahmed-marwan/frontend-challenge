@@ -40,7 +40,7 @@ function ProductCard({ product }: ProductCardProps) {
       />
 
       <CardContent>
-        <Typography noWrap gutterBottom variant="h6">
+        <Typography noWrap gutterBottom variant="h6" data-testid={product.gtin}>
           {product.title}
         </Typography>
 
@@ -49,12 +49,18 @@ function ProductCard({ product }: ProductCardProps) {
           color="primary"
           component="span"
           className={product.price > product.sale_price ? classes.strike : ''}
+          data-testid={`price-${product.gtin}`}
         >
           {product.price}
         </Typography>
 
         {product.price > product.sale_price && (
-          <Typography variant="subtitle1" color="primary" component="span">
+          <Typography
+            variant="subtitle1"
+            color="primary"
+            component="span"
+            data-testid={`sale-price-${product.gtin}`}
+          >
             {product.sale_price}
           </Typography>
         )}
@@ -63,6 +69,7 @@ function ProductCard({ product }: ProductCardProps) {
           {product.gender}
         </Typography>
       </CardContent>
+
       <CardActions>
         <Modal product={product} />
       </CardActions>
