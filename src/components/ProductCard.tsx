@@ -15,21 +15,32 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       maxWidth: 350,
+      minHeight: 426,
       padding: 10,
     },
     media: {
       minHeight: 270,
+    },
+    cardContent: {
+      paddingBottom: 0,
     },
     strike: {
       color: 'red',
       paddingRight: 10,
       textDecoration: 'line-through',
     },
+    capitalize: {
+      textTransform: 'capitalize',
+    },
+    showMore: {
+      justifyContent: 'flex-end',
+    },
   })
 );
 
 function ProductCard({ product }: ProductCardProps) {
   const classes = useStyles();
+  const allowedGenderValues = ['female', 'male', 'unisex'];
 
   return (
     <Card className={classes.root} elevation={2}>
@@ -39,7 +50,7 @@ function ProductCard({ product }: ProductCardProps) {
         title="Product"
       />
 
-      <CardContent>
+      <CardContent className={classes.cardContent}>
         <Typography noWrap gutterBottom variant="h6" data-testid={product.gtin}>
           {product.title}
         </Typography>
@@ -65,12 +76,19 @@ function ProductCard({ product }: ProductCardProps) {
           </Typography>
         )}
 
-        <Typography variant="subtitle1" component="h3">
-          {product.gender}
+        <Typography
+          variant="subtitle1"
+          component="h3"
+          className={classes.capitalize}
+        >
+          {/* Filter out non gender union type values */}
+          {allowedGenderValues.indexOf(product.gender) === -1
+            ? ''
+            : product.gender}
         </Typography>
       </CardContent>
 
-      <CardActions>
+      <CardActions className={classes.showMore}>
         <Modal product={product} />
       </CardActions>
     </Card>

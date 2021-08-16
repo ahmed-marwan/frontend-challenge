@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, CardMedia, Grid } from '@material-ui/core';
+import { Button, CardMedia, Container, Grid } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
@@ -38,26 +38,38 @@ function TransitionsModal({ product }: ModalProps) {
 
   const renderAdditionalImage = () => {
     return (
-      <Grid container spacing={1}>
-        {product.additional_image_link.split(',').map((img, index) => (
-          <Grid
-            key={index}
-            item
-            xs={12}
-            sm={6}
-            md={6}
-            data-testid="additional-image"
-          >
-            <CardMedia className={classes.media} image={img} title="Product" />
-          </Grid>
-        ))}
-      </Grid>
+      <Container>
+        <Grid container spacing={1}>
+          {product.additional_image_link.split(',').map((img, index) => (
+            <Grid
+              key={index}
+              item
+              xs={4}
+              sm={6}
+              md={6}
+              data-testid="additional-image"
+            >
+              <CardMedia
+                className={classes.media}
+                image={img}
+                title="Product"
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
     );
   };
 
   return (
     <div>
-      <Button size="small" color="primary" onClick={handleOpen}>
+      <Button
+        size="small"
+        color="primary"
+        onClick={handleOpen}
+        // When additional image/s are not provided
+        disabled={!product.additional_image_link.length}
+      >
         Show More
       </Button>
 

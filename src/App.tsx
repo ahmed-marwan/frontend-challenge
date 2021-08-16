@@ -10,12 +10,14 @@ import './styles/App.scss';
 export interface Product {
   title: string;
   gtin: number;
-  gender: string;
+  gender: Gender;
   sale_price: string;
   price: string;
   image_link: string;
   additional_image_link: string;
 }
+
+type Gender = 'female' | 'male' | 'unisex';
 
 const useStyles = makeStyles(() => ({
   paginator: {
@@ -41,7 +43,7 @@ function App() {
   useEffect(() => {
     let isSubscribed = true;
 
-    Papa.parse('data/test.csv', {
+    Papa.parse('data/products.csv', {
       header: true,
       download: true,
       complete: function (results) {
@@ -56,7 +58,6 @@ function App() {
         }
       },
     });
-
     return () => {
       isSubscribed = false;
     };
@@ -119,13 +120,14 @@ function App() {
     window.scroll({
       top: 0,
       left: 0,
-      behavior: 'smooth',
     });
   };
 
   return (
     <div>
       <main>
+        <h1>Products Search Engine</h1>
+        
         <Input
           inputValue={inputValue}
           handleOnChange={handleOnChange}
