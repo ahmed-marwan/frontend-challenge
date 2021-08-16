@@ -6,7 +6,7 @@ import App from './App';
 import { data } from '../public/data/testData';
 
 const server = setupServer(
-  rest.get('http://localhost/data/test.csv', (req, res, ctx) => {
+  rest.get('http://localhost/data/products.csv', (req, res, ctx) => {
     return res(ctx.text(data));
   })
 );
