@@ -6,6 +6,7 @@ import { CardActions, Typography } from '@material-ui/core';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { Product } from '../App';
 import Modal from './Modal';
+import useOnScreen from '../hooks/useOnScreen';
 
 interface ProductCardProps {
   product: Product;
@@ -34,6 +35,7 @@ const useStyles = makeStyles(() =>
     },
     showMore: {
       justifyContent: 'flex-end',
+      padding: '0 8px',
     },
   })
 );
@@ -42,13 +44,23 @@ function ProductCard({ product }: ProductCardProps) {
   const classes = useStyles();
   const allowedGenderValues = ['female', 'male', 'unisex'];
 
+  // Percentage of img container's visibility before running the intersection fn
+  const [ref, visible] = useOnScreen({ threshold: 0.15 });
+
   return (
-    <Card className={classes.root} elevation={2}>
-      <CardMedia
-        className={classes.media}
-        image={product.image_link}
-        title="Product"
-      />
+    <Card
+      className={classes.root}
+      elevation={2}
+      ref={ref as React.RefObject<HTMLDivElement>}
+    >
+      {/* Showing imgs only when container is visible */}
+      {visible && (
+        <CardMedia
+          className={classes.media}
+          image={product.image_link}
+          title="Product"
+        />
+      )}
 
       <CardContent className={classes.cardContent}>
         <Typography noWrap gutterBottom variant="h6" data-testid={product.gtin}>
@@ -85,6 +97,10 @@ function ProductCard({ product }: ProductCardProps) {
           {allowedGenderValues.indexOf(product.gender) === -1
             ? ''
             : product.gender}
+        </Typography>
+
+        <Typography variant="overline" component="span">
+          {product.gtin}
         </Typography>
       </CardContent>
 
