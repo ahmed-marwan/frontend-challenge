@@ -18,6 +18,16 @@ beforeAll(() => {
 afterAll(() => server.close());
 afterEach(() => server.resetHandlers());
 
+// Mock intersectionObserver
+beforeEach(() => {
+  const mockIntersectionObserver = jest.fn();
+  mockIntersectionObserver.mockReturnValue({
+    observe: () => null,
+    unobserve: () => null,
+  });
+  window.IntersectionObserver = mockIntersectionObserver;
+});
+
 describe('app', () => {
   it('renders app without any products', () => {
     render(<App />);
