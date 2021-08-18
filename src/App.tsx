@@ -32,6 +32,7 @@ function App() {
   const [productHints, setProductHints] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
+  const [searchResultsNum, setSearchResultsNum] = useState(0);
 
   const [noOfPages, setNoOfPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,6 +78,8 @@ function App() {
       const matchedProducts = data.filter((item) =>
         item.title.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase())
       );
+
+      setSearchResultsNum(matchedProducts.length);
 
       // 1.2. Select the list of products to be rendered
       const indexOfFirstProduct = (currentPage - 1) * productsPerPage;
@@ -127,12 +130,13 @@ function App() {
     <div>
       <main>
         <h1>Products Search Engine</h1>
-        
+
         <Input
           inputValue={inputValue}
           handleOnChange={handleOnChange}
           productHints={productHints}
           clearInput={clearInput}
+          searchResultsNum={searchResultsNum}
         />
 
         <ProductsList products={products} />

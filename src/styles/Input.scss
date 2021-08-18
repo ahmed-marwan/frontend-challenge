@@ -1,6 +1,6 @@
 .input-container {
   max-width: 650px;
-  margin: 35px auto 35px auto;
+  margin: 35px auto 15px auto;
   display: flex;
   align-items: center;
   border: 1px solid rgb(207, 207, 207);
@@ -31,4 +31,12 @@
     cursor: pointer;
     margin-right: 10px;
   }
+}
+
+.search-results {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: bold;
+  text-transform: capitalize;
 }
